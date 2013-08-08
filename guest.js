@@ -15,8 +15,8 @@ var sys = require('sys'),
 
 // Constructor
 function Guest (name, path) {
-    this.name = name;
-    this.path = path;
+    var name = name;
+    var path = path;
     this.vmx = ini.parse(fs.readFileSync(path, 'utf-8'));
     var vmrun = config[os.platform()][os.arch()]["vmrun"];
     var vncpasswd = "./bin/" + os.platform() + "/vmware-vncpasswd ";
@@ -25,78 +25,91 @@ function Guest (name, path) {
     // Class methods
     this.isRunning = function() {
         output = execSync(vmrun + " list");
-        return output.split(/\r?\n/).splice(1,1).sort().indexOf(this.path);
+        output = output.split(/\r?\n/).splice(1,1).sort();
+        if (output.indexOf(path) >= 0)
+            return true;
+        else
+            return false;
     };
 
     this.powerOn = function(gui) {
         if (gui) {
-            output = execSync(vmrun + " start '" + this.path + "' gui");
+            output = execSync(vmrun + " start '" + path + "' gui");
         }
         else {
-            output = execSync(vmrun + " start '" + this.path + "' nogui");
+            output = execSync(vmrun + " start '" + path + "' nogui");
         }
         console.log(output);
     };
 
     this.powerOff = function(soft) {
         if (soft) {
-            output = execSync(vmrun + " stop '" + this.path + "' soft");
+            output = execSync(vmrun + " stop '" + path + "' soft");
         }
         else {
-            output = execSync(vmrun + " stop '" + this.path + "' hard");
+            output = execSync(vmrun + " stop '" + path + "' hard");
         }
         console.log(output);
     };
 
     this.powerPause = function() {
-        output = execSync(vmrun + " pause '" + this.path + "'");
+        output = execSync(vmrun + " pause '" + path + "'");
         console.log(output);
     };
 
     this.powerReset = function(soft) {
         if (soft) {
-            output = execSync(vmrun + " suspend '" + this.path + "' soft");
+            output = execSync(vmrun + " suspend '" + path + "' soft");
         }
         else {
-            output = execSync(vmrun + " suspend '" + this.path + "' hard");
+            output = execSync(vmrun + " suspend '" + path + "' hard");
         }
         console.log(output);
     };
 
     this.powerSuspend = function(soft) {
         if (soft) {
-            output = execSync(vmrun + " suspend '" + this.path + "' soft");
+            output = execSync(vmrun + " suspend '" + path + "' soft");
         }
         else {
-            output = execSync(vmrun + " suspend '" + this.path + "' hard");
+            output = execSync(vmrun + " suspend '" + path + "' hard");
         }
         console.log(output);
     };
 
     this.powerUnpause = function() {
-        output = execSync(vmrun + " unpause '" + this.path + "'");
+        output = execSync(vmrun + " unpause '" + path + "'");
         console.log(output);
         return output;
     };
 
     this.readVariable = function(variable) {
-        output = execSync(vmrun + " readVariable '" + this.path + "' runtimeConfig " + variable );
+        output = execSync(vmrun + " readVariable '" + path + "' runtimeConfig " + variable );
         console.log(output);
         return output
     };
 
     this.writeVariable = function(variable, value) {
-        output = execSync(vmrun + " writeVariable '" + this.path + "' runtimeConfig " + variable + " " + value);
+        output = execSync(vmrun + " writeVariable '" + path + "' runtimeConfig " + variable + " " + value);
         console.log(output);
         return output;
     };
 
     // Property getters and setters
+    this.__defineGetter__('name', function() {
+        return name;
+    });
+
+    this.__defineGetter__('path', function() {
+        return path;
+    });
+
     this.__defineGetter__('remoteDisplayKey', function() {
         return this.vmx["RemoteDisplay.vnc.key"];
     });
 
     this.__defineSetter__('remoteDisplayKey', function(arg) {
+        var output;
         output = execSync(vncpasswd + arg);
         output = output.split(' = ');
         //this.vmx["RemoteDisplay.vnc.key"] = output[1];
@@ -113,6 +126,6 @@ function Guest (name, path) {
         console.log('remoteDisplayPort=' + arg);
     });
 
-}
+ }
 
 module.exports = Guest;

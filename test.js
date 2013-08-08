@@ -68,3 +68,10 @@ Object.keys(inventory).forEach(function(key) {
     guest.remoteDisplayPassword = 'password';
     guest.remoteDisplayPort = 5999;
 });
+
+var vmrun = inventory["/Users/Shared/vmimages/FreeDOS/FreeDOS.vmx"];
+vmrun.powerOn(true);
+console.log(vmrun.readVariable("RemoteDisplay.vnc.webSocket.enabled"));
+vmrun.powerOff();
+console.log(vmrun.isRunning());
+
