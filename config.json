@@ -1,0 +1,36 @@
+{
+    "serverport" : 8888,
+    "agentport" : 8889,
+    "darwin" :  {
+        "ia32" : {
+            "vmrun" : "/Applications/VMware\\ Fusion.app/Contents/Library/vmrun -T fusion",
+            "userinventory" : "/Library/Application Support/VMware Fusion/vmInventory",
+            "sharedinventory" : "/Library/Application Support/VMware/VMware Fusion/Shared/vmInventory"
+        },
+        "x64" : {
+            "vmrun" : "/Applications/VMware\\ Fusion.app/Contents/Library/vmrun -T fusion",
+            "userinventory" : "/Library/Application Support/VMware Fusion/vmInventory",
+            "sharedinventory" : "/Library/Application Support/VMware/VMware Fusion/Shared/vmInventory"
+        }
+    },
+    "linux" : {
+        "ia32" : {
+            "vmrunlinux" : "/usr/bin/vmrun -T ws",
+            "userinventory" : "~/.vmware/Inventory.vmls"
+        },
+        "x64" : {
+            "vmrunlinux" : "/usr/bin/vmrun -T ws",
+            "userinventory" : "~/.vmware/Inventory.vmls"
+        }
+    },
+    "win32" : {
+        "ia32" : {
+            "vmrunwin32" : "C:\\Program Files\\VMware\\Vmware Workstation\\vmrun.exe -T ws",
+            "userinventory" : "/Library/Application Support/VMware Fusion/vmInventory"
+        },
+        "x64" : {
+            "vmrunwin64" : "C:\\Program Files(x86)\\VMware\\Vmware Workstation\\vmrun.exe -T ws",
+            "userinventory" : "/Library/Application Support/VMware Fusion/vmInventory"
+        }
+    }
+}
