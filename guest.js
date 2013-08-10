@@ -9,20 +9,42 @@
 var sys = require('sys'),
     fs = require('fs'),
     os = require('os'),
-    ini = require('ini'),
     execSync = require('exec-sync'),
+    dict = require('./dict.js'),
     config = require('./config.json');
 
 // Constructor
-function Guest (name, path) {
-    var name = name;
-    var path = path;
-    this.vmx = ini.parse(fs.readFileSync(path, 'utf-8'));
+function Guest (guestname, guestpath) {
+    var name = guestname;
+    var path = guestpath;
+    this.vmx = dict.decode(fs.readFileSync(path, 'utf-8'));
     var vmrun = config[os.platform()][os.arch()]["vmrun"];
     var vncpasswd = "./bin/" + os.platform() + "/vmware-vncpasswd ";
     var output;
     
     // Class methods
+    this.enableRemoteDisplay = function() {
+        // Save running state
+        var wasRunning = this.isRunning();
+
+        // Check we have websocket address
+        if (this.vmx["RemoteDisplay.vnc.webSocket.port"]) {
+            if (wasRunning) {
+                this.powerSuspend();
+            }
+            this.vmx["RemoteDisplay.vnc.enabled"] = 'TRUE';
+            output = dict.encode(this.vmx);
+            fs.writeFileSync(path, output);
+            if (wasRunning) {
+                this.powerOn();
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
+
     this.isRunning = function() {
         output = execSync(vmrun + " list");
         output = output.split(/\r?\n/).splice(1,1).sort();
@@ -39,7 +61,6 @@ function Guest (name, path) {
         else {
             output = execSync(vmrun + " start '" + path + "' nogui");
         }
-        console.log(output);
     };
 
     this.powerOff = function(soft) {
@@ -49,12 +70,10 @@ function Guest (name, path) {
         else {
             output = execSync(vmrun + " stop '" + path + "' hard");
         }
-        console.log(output);
     };
 
     this.powerPause = function() {
         output = execSync(vmrun + " pause '" + path + "'");
-        console.log(output);
     };
 
     this.powerReset = function(soft) {
@@ -64,7 +83,6 @@ function Guest (name, path) {
         else {
             output = execSync(vmrun + " suspend '" + path + "' hard");
         }
-        console.log(output);
     };
 
     this.powerSuspend = function(soft) {
@@ -74,24 +92,20 @@ function Guest (name, path) {
         else {
             output = execSync(vmrun + " suspend '" + path + "' hard");
         }
-        console.log(output);
     };
 
     this.powerUnpause = function() {
         output = execSync(vmrun + " unpause '" + path + "'");
-        console.log(output);
         return output;
     };
 
     this.readVariable = function(variable) {
         output = execSync(vmrun + " readVariable '" + path + "' runtimeConfig " + variable );
-        console.log(output);
         return output
     };
 
     this.writeVariable = function(variable, value) {
         output = execSync(vmrun + " writeVariable '" + path + "' runtimeConfig " + variable + " " + value);
-        console.log(output);
         return output;
     };
 
@@ -112,8 +126,7 @@ function Guest (name, path) {
         var output;
         output = execSync(vncpasswd + arg);
         output = output.split(' = ');
-        //this.vmx["RemoteDisplay.vnc.key"] = output[1];
-        console.log('remoteDisplayKey=' + arg);
+        this.vmx["RemoteDisplay.vnc.key"] = output[1];
     });
 
     this.__defineGetter__('remoteDisplayPort', function(){
@@ -121,9 +134,7 @@ function Guest (name, path) {
     });
 
     this.__defineSetter__('remoteDisplayPort', function(arg){
-        // TODO: Check port range
-        //this.vmx["RemoteDisplay.vnc.webSocket.port"] = arg;
-        console.log('remoteDisplayPort=' + arg);
+        this.vmx["RemoteDisplay.vnc.webSocket.port"] = arg;
     });
 
  }
