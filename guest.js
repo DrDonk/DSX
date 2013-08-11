@@ -46,29 +46,25 @@ function Guest (guestname, guestpath) {
     };
 
     this.isRunning = function() {
-        output = execSync(vmrun + " list");
-        output = output.split(/\r?\n/).splice(1,1).sort();
-        if (output.indexOf(path) >= 0)
-            return true;
-        else
-            return false;
+        output = execSync(vmrun + " list").split("\n");
+        return (output.indexOf(path) > -1);
     };
 
-    this.powerOn = function(gui) {
-        if (gui) {
-            output = execSync(vmrun + " start '" + path + "' gui");
+    this.powerOn = function(option) {
+        if (option == "gui" || option == "nogui") {
+            output = execSync(vmrun + " start '" + path + "' " + option);
         }
         else {
-            output = execSync(vmrun + " start '" + path + "' nogui");
+            output = execSync(vmrun + " start '" + path + "'");
         }
     };
 
-    this.powerOff = function(soft) {
-        if (soft) {
-            output = execSync(vmrun + " stop '" + path + "' soft");
+    this.powerOff = function(option) {
+        if (option == "soft" || option == "hard") {
+            output = execSync(vmrun + " stop '" + path + "' " + option);
         }
         else {
-            output = execSync(vmrun + " stop '" + path + "' hard");
+            output = execSync(vmrun + " stop '" + path + "'");
         }
     };
 
@@ -76,21 +72,21 @@ function Guest (guestname, guestpath) {
         output = execSync(vmrun + " pause '" + path + "'");
     };
 
-    this.powerReset = function(soft) {
-        if (soft) {
-            output = execSync(vmrun + " suspend '" + path + "' soft");
+    this.powerReset = function(option) {
+        if (option == "soft" || option == "hard") {
+            output = execSync(vmrun + " reset '" + path + "' " + option);
         }
         else {
-            output = execSync(vmrun + " suspend '" + path + "' hard");
+            output = execSync(vmrun + " reset '" + path + "'");
         }
     };
 
     this.powerSuspend = function(soft) {
-        if (soft) {
-            output = execSync(vmrun + " suspend '" + path + "' soft");
+        if (option == "soft" || option == "hard") {
+            output = execSync(vmrun + " suspend '" + path + "' " + option);
         }
         else {
-            output = execSync(vmrun + " suspend '" + path + "' hard");
+            output = execSync(vmrun + " suspend '" + path + "'");
         }
     };
 

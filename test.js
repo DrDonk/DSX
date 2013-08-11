@@ -16,6 +16,7 @@
 var sys = require('sys'),
     fs = require('fs'),
     os = require('os'),
+    dict = require('./dict.js'),
     config = require('./config.json'),
     guest = require('./guest.js');
 
@@ -45,39 +46,43 @@ function getUserHome() {
     return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 }
 
-//var vmPrivate = dict.decode(fs.readFileSync(getUserHome() + config[os.platform()][os.arch()]["userinventory"], 'utf-8'));
-//parseinventory(vmPrivate);
-//
-//if (os.platform() == 'darwin') {
-//    var vmShared = dict.decode(fs.readFileSync(config[os.platform()][os.arch()]["sharedinventory"], 'utf-8'));
-//    parseinventory(vmShared);
-//}
-//
-//Object.keys(inventory).forEach(function(key) {
-//    var guest = inventory[key];
-//    console.log(guest.name);
-//    console.log(guest.path);
-//    console.log(guest.isRunning());
-//    console.log(guest.vmx["guestOS"]);
-//    console.log(guest.vmx["RemoteDisplay.vnc.enabled"]);
-//    console.log(guest.vmx["RemoteDisplay.vnc.webSocket.port"]);
-//    console.log(guest.vmx["RemoteDisplay.vnc.key"]);
-//    guest.remoteDisplayPassword = 'password';
-//    guest.remoteDisplayPort = 5999;
-//});
-//
-//var vmrun = inventory["/Users/Shared/vmimages/FreeDOS/FreeDOS.vmx"];
-//vmrun.powerOn(true);
-//if (!vmrun.remoteDisplayPort) {
-//    vmrun.remoteDisplayPort = 5910;
-//}
-//console.log(vmrun.remoteDisplayPort);
-//vmrun.enableRemoteDisplay();
-//vmrun.powerOff();
-//console.log(vmrun.isRunning());
+var vmPrivate = dict.decode(fs.readFileSync(getUserHome() + config[os.platform()][os.arch()]["userinventory"], 'utf-8'));
+parseinventory(vmPrivate);
 
+if (os.platform() == 'darwin') {
+    var vmShared = dict.decode(fs.readFileSync(config[os.platform()][os.arch()]["sharedinventory"], 'utf-8'));
+    parseinventory(vmShared);
+}
 
-vmx = new guest('Donk', './test/FreeDOS2.vmx');
-vmx.remoteDisplayPort = 5900;
-vmx.enableRemoteDisplay();
-console.log(vmx.vmx);
+Object.keys(inventory).forEach(function(key) {
+    var guest = inventory[key];
+    console.log(guest.name);
+    console.log(guest.path);
+    console.log(guest.isRunning());
+    console.log(guest.vmx["guestOS"]);
+    console.log(guest.vmx["RemoteDisplay.vnc.enabled"]);
+    console.log(guest.vmx["RemoteDisplay.vnc.webSocket.port"]);
+    console.log(guest.vmx["RemoteDisplay.vnc.key"]);
+});
+
+var vmrun = inventory["/Users/Shared/vmimages/FreeDOS/FreeDOS.vmx"];
+if (!vmrun.isRunning()) {
+    vmrun.powerOn(true);
+}
+
+if (!vmrun.remoteDisplayPort) {
+    vmrun.remoteDisplayPort = 5910;
+}
+
+console.log(vmrun.remoteDisplayPort);
+
+vmrun.enableRemoteDisplay();
+
+console.log(vmrun.vmx["RemoteDisplay.vnc.enabled"]);
+console.log(vmrun.vmx["RemoteDisplay.vnc.webSocket.port"]);
+console.log(vmrun.vmx["RemoteDisplay.vnc.key"]);
+
+//vmx = new guest('Donk', './test/FreeDOS2.vmx');
+//vmx.remoteDisplayPort = 5900;
+//vmx.enableRemoteDisplay();
+//console.log(vmx.vmx);
