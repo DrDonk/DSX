@@ -17,7 +17,7 @@ var sys = require('sys'),
 function Guest (guestname, guestpath) {
     var name = guestname;
     var path = guestpath;
-    this.vmx = dict.decode(fs.readFileSync(path, 'utf-8'));
+    var vmx = dict.decode(fs.readFileSync(path, 'utf-8'));
     var vmrun = config[os.platform()][os.arch()]["vmrun"];
     var vncpasswd = "./bin/" + os.platform() + "/vmware-vncpasswd ";
     var output;
@@ -25,19 +25,19 @@ function Guest (guestname, guestpath) {
     // Class methods
     this.enableRemoteDisplay = function() {
         // Save running state
-        var wasRunning = this.isRunning();
+        var isRunning = this.isRunning();
 
         // Check we have websocket address
-        if (this.vmx["RemoteDisplay.vnc.webSocket.port"]) {
-            if (wasRunning) {
-                this.powerSuspend();
-            }
-            this.vmx["RemoteDisplay.vnc.enabled"] = 'TRUE';
-            output = dict.encode(this.vmx);
+        if (vmx["RemoteDisplay.vnc.webSocket.port"] && !isRunning) {
+//            if (isRunning) {
+//                this.powerSuspend();
+//            }
+            vmx["RemoteDisplay.vnc.enabled"] = 'TRUE';
+            output = dict.encode(vmx);
             fs.writeFileSync(path, output);
-            if (wasRunning) {
-                this.powerOn();
-            }
+//            if (isRunning) {
+//                this.powerOn();
+//            }
             return true;
         }
         else {
@@ -81,7 +81,7 @@ function Guest (guestname, guestpath) {
         }
     };
 
-    this.powerSuspend = function(soft) {
+    this.powerSuspend = function(option) {
         if (option == "soft" || option == "hard") {
             output = execSync(vmrun + " suspend '" + path + "' " + option);
         }
@@ -114,23 +114,35 @@ function Guest (guestname, guestpath) {
         return path;
     });
 
+    this.__defineGetter__('guestOS', function() {
+        return vmx["guestOS"];
+    });
+
+    this.__defineGetter__('hasKey', function() {
+        return (vmx["RemoteDisplay.vnc.key"] ? true : false);
+    });
+
+    this.__defineGetter__('remoteDisplayEnabled', function() {
+        return vmx["RemoteDisplay.vnc.enabled"] || false;
+    });
+
     this.__defineGetter__('remoteDisplayKey', function() {
-        return this.vmx["RemoteDisplay.vnc.key"];
+        return vmx["RemoteDisplay.vnc.key"] || "";
     });
 
     this.__defineSetter__('remoteDisplayKey', function(arg) {
         var output;
         output = execSync(vncpasswd + arg);
         output = output.split(' = ');
-        this.vmx["RemoteDisplay.vnc.key"] = output[1];
+        vmx["RemoteDisplay.vnc.key"] = output[1];
     });
 
     this.__defineGetter__('remoteDisplayPort', function(){
-        return this.vmx["RemoteDisplay.vnc.webSocket.port"];
+        return vmx["RemoteDisplay.vnc.webSocket.port"] || 0;
     });
 
     this.__defineSetter__('remoteDisplayPort', function(arg){
-        this.vmx["RemoteDisplay.vnc.webSocket.port"] = arg;
+        vmx["RemoteDisplay.vnc.webSocket.port"] = arg;
     });
 
  }

@@ -18,71 +18,27 @@ var sys = require('sys'),
     os = require('os'),
     dict = require('./dict.js'),
     config = require('./config.json'),
+    host = require('./host.js'),
     guest = require('./guest.js');
 
-var inventory = {};
 
-function parseinventory(file) {
-    Object.keys(file).forEach(function(key) {
-        var name;
-        var path;
-        if (key.indexOf("config") >= 0) {
-            if (file[key] != "") {
-                path = file[key];
-                name = file[key.replace("config", "DisplayName")];
-                if (fs.existsSync(path)) {
-                    inventory[path] = new guest(name, path);
-                    console.log(path + ' ' + name);
-                }
-                else {
-                    console.log("Err: VMX file does not exist " + path )
-                }
-            }
-        }
-    });
-}
+var host = new host();
+console.log(host);
 
-function getUserHome() {
-    return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
-}
-
-var vmPrivate = dict.decode(fs.readFileSync(getUserHome() + config[os.platform()][os.arch()]["userinventory"], 'utf-8'));
-parseinventory(vmPrivate);
-
-if (os.platform() == 'darwin') {
-    var vmShared = dict.decode(fs.readFileSync(config[os.platform()][os.arch()]["sharedinventory"], 'utf-8'));
-    parseinventory(vmShared);
-}
-
-Object.keys(inventory).forEach(function(key) {
-    var guest = inventory[key];
+Object.keys(host.inventory).forEach(function(key) {
+    var guest = host.inventory[key].guest;
     console.log(guest.name);
     console.log(guest.path);
     console.log(guest.isRunning());
-    console.log(guest.vmx["guestOS"]);
-    console.log(guest.vmx["RemoteDisplay.vnc.enabled"]);
-    console.log(guest.vmx["RemoteDisplay.vnc.webSocket.port"]);
-    console.log(guest.vmx["RemoteDisplay.vnc.key"]);
+    console.log(guest.guestOS);
+    console.log(guest.remoteDisplayEnabled);
+    console.log(guest.remoteDisplayPort);
+    console.log(guest.remoteDisplayKey);
 });
 
-var vmrun = inventory["/Users/Shared/vmimages/FreeDOS/FreeDOS.vmx"];
-if (!vmrun.isRunning()) {
-    vmrun.powerOn(true);
-}
-
+var vmrun = host.inventory["/Users/i049299/vmimages/freenas.vmwarevm/freenas.vmx"].guest;
+console.log(vmrun);
 if (!vmrun.remoteDisplayPort) {
-    vmrun.remoteDisplayPort = 5910;
+    vmrun.remoteDisplayPort = 5920;
 }
-
-console.log(vmrun.remoteDisplayPort);
-
 vmrun.enableRemoteDisplay();
-
-console.log(vmrun.vmx["RemoteDisplay.vnc.enabled"]);
-console.log(vmrun.vmx["RemoteDisplay.vnc.webSocket.port"]);
-console.log(vmrun.vmx["RemoteDisplay.vnc.key"]);
-
-//vmx = new guest('Donk', './test/FreeDOS2.vmx');
-//vmx.remoteDisplayPort = 5900;
-//vmx.enableRemoteDisplay();
-//console.log(vmx.vmx);
