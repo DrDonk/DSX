@@ -16,13 +16,13 @@
 var sys = require('sys'),
     fs = require('fs'),
     os = require('os'),
-    dict = require('./dict.js'),
-    config = require('./config.json'),
-    host = require('./host.js'),
-    guest = require('./guest.js');
+    dict = require('./../lib/dict.js'),
+    config = require('./../config/config.json'),
+    server = require('./../lib/host.js'),
+    guest = require('./../lib/guest.js');
 
 
-var host = new host();
+var host = new server();
 console.log(host);
 
 Object.keys(host.inventory).forEach(function(key) {

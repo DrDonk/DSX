@@ -1,6 +1,5 @@
 {
     "serverport" : 8888,
-    "agentport" : 8889,
     "darwin" :  {
         "ia32" : {
             "vmrun" : "/Applications/VMware\\ Fusion.app/Contents/Library/vmrun -T fusion",
