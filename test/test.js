@@ -13,14 +13,7 @@
  RemoteDisplay.vnc.key = "<des encrypted password>"
  */
 
-var sys = require('sys'),
-    fs = require('fs'),
-    os = require('os'),
-    dict = require('./../lib/dict.js'),
-    config = require('./../config/config.json'),
-    server = require('./../lib/host.js'),
-    guest = require('./../lib/guest.js');
-
+var server = require('./../lib/host.js');
 
 var host = new server();
 console.log(host);

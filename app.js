@@ -5,10 +5,7 @@
  * Time: 21:37
  * To change this template use File | Settings | File Templates.
  */
-var sys = require('sys'),
-    fs = require('fs'),
-    os = require('os'),
-    express = require('express'),
+var express = require('express'),
     config = require('./config/config.json'),
     host = require('./lib/host.js');
 
