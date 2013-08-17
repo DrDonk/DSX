@@ -17,6 +17,10 @@ var server = new host();
 //app.use(express.bodyParser());
 app.set('title',  'DSX');
 
+app.get('/', function(req, res){
+    res.send('DSX Web Service');
+});
+
 app.get('/guests', function(req, res){
     res.json(server.inventory);
 });
@@ -27,6 +31,24 @@ app.get('/guests/:id', function(req, res){
 
 app.get('/guests/:id/name', function(req, res){
     res.json(server.inventory[req.params.id].guest.name);
+});
+
+app.get('/guests/:id/key', function(req, res){
+    res.json(server.inventory[req.params.id].guest.remoteDisplayKey);
+});
+
+app.put('/guests/:id/key/:pwd', function(req, res){
+    server.inventory[req.params.id].guest.remoteDisplayKey = req.params.pwd;
+    res.json(server.inventory[req.params.id].guest.remoteDisplayKey);
+});
+
+app.get('/guests/:id/port', function(req, res){
+    res.json(server.inventory[req.params.id].guest.remoteDisplayPort);
+});
+
+app.put('/guests/:id/port/:num', function(req, res){
+    server.inventory[req.params.id].guest.remoteDisplayPort = req.params.num;
+    res.json(server.inventory[req.params.id].guest.remoteDisplayPort);
 });
 
 app.get('/guests/:id/poweroff', function(req, res){
@@ -52,9 +74,5 @@ app.get('/guests/:id/powersuspend', function(req, res){
 app.get('/guests/:id/powerunpause', function(req, res){
     res.json(server.inventory[req.params.id].guest.powerUnpause());
 });
-
-//app.get('/guests', function(req, res){
-//    res.send('hello world');
-//});
 
 app.listen(config["serverport"]);
