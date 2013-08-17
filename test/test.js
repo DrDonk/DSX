@@ -36,7 +36,9 @@ Object.keys(host.inventory).forEach(function(key) {
     console.log(guest.remoteDisplayKey);
 });
 
-var vmrun = host.inventory["/Users/i049299/vmimages/freenas.vmwarevm/freenas.vmx"].guest;
+//var vmrun = host.inventory["/Users/i049299/vmimages/freenas.vmwarevm/freenas.vmx"].guest;
+var vmrun = host.inventory["564d5034a0b2f06b98f14f424d6e110b"].guest;
+
 console.log(vmrun);
 if (!vmrun.remoteDisplayPort) {
     vmrun.remoteDisplayPort = 5920;

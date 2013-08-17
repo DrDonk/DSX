@@ -9,14 +9,52 @@ var sys = require('sys'),
     fs = require('fs'),
     os = require('os'),
     express = require('express'),
-    dict = require('./lib/dict.js'),
     config = require('./config/config.json'),
-    guest = require('./lib/guest.js');
+    host = require('./lib/host.js');
 
 var app = express();
+var server = new host();
+//app.use(express.bodyParser());
 app.set('title',  'DSX');
-app.get('/', function(req, res){
-    res.send('hello world');
+
+app.get('/guests', function(req, res){
+    res.json(server.inventory);
 });
+
+app.get('/guests/:id', function(req, res){
+    res.json(server.inventory[req.params.id]);
+});
+
+app.get('/guests/:id/name', function(req, res){
+    res.json(server.inventory[req.params.id].guest.name);
+});
+
+app.get('/guests/:id/poweroff', function(req, res){
+    res.json(server.inventory[req.params.id].guest.powerOff());
+});
+
+app.get('/guests/:id/poweron', function(req, res){
+    res.json(server.inventory[req.params.id].guest.powerOn());
+});
+
+app.get('/guests/:id/powerpause', function(req, res){
+    res.json(server.inventory[req.params.id].guest.powerPause());
+});
+
+app.get('/guests/:id/powereset', function(req, res){
+    res.json(server.inventory[req.params.id].guest.powerReset());
+});
+
+app.get('/guests/:id/powersuspend', function(req, res){
+    res.json(server.inventory[req.params.id].guest.powerSuspend());
+});
+
+app.get('/guests/:id/powerunpause', function(req, res){
+    res.json(server.inventory[req.params.id].guest.powerUnpause());
+});
+
+//app.get('/guests', function(req, res){
+//    res.send('hello world');
+//});
 
 app.listen(config["serverport"]);
