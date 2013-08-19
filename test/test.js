@@ -23,17 +23,17 @@ Object.keys(host.inventory).forEach(function(key) {
     console.log(guest.name);
     console.log(guest.path);
     console.log(guest.isRunning());
-    console.log(guest.guestOS);
-    console.log(guest.remoteDisplayEnabled);
-    console.log(guest.remoteDisplayPort);
-    console.log(guest.remoteDisplayKey);
+    console.log(guest.guestos);
+    console.log(guest.enabled);
+    console.log(guest.port);
+    console.log(guest.key);
 });
 
 //var vmrun = host.inventory["/Users/i049299/vmimages/freenas.vmwarevm/freenas.vmx"].guest;
 var vmrun = host.inventory["564d5034a0b2f06b98f14f424d6e110b"].guest;
-
 console.log(vmrun);
-if (!vmrun.remoteDisplayPort) {
-    vmrun.remoteDisplayPort = 5920;
-}
-vmrun.enableRemoteDisplay();
+vmrun.enabled = true;
+vmrun.key = 'password';
+vmrun.port = 5920;
+vmrun.commit();
+console.log(vmrun);
