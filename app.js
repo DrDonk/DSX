@@ -53,6 +53,10 @@ app.put('/guests/:id/port/:num', function(req, res){
     res.json(server.inventory[req.params.id].guest.port);
 });
 
+app.get('/guests/:id/isrunning', function(req, res){
+    res.json(server.inventory[req.params.id].guest.isRunning());
+});
+
 app.get('/guests/:id/poweroff', function(req, res){
     res.json(server.inventory[req.params.id].guest.powerOff('default'));
 });
