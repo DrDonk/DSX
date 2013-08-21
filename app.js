@@ -40,7 +40,7 @@ app.get('/guests/:id/key', function(req, res){
 });
 
 app.put('/guests/:id/key/:pwd', function(req, res){
-    server.inventory[req.params.id].guest.remoteDisplayKey = req.params.pwd;
+    server.inventory[req.params.id].guest.key = req.params.pwd;
     res.json(server.inventory[req.params.id].guest.key);
 });
 
@@ -53,7 +53,7 @@ app.put('/guests/:id/port/:num', function(req, res){
     res.json(server.inventory[req.params.id].guest.port);
 });
 
-app.get('/guests/:id/isrunning', function(req, res){
+app.get('/guests/:id/poweredon', function(req, res){
     res.json(server.inventory[req.params.id].guest.isRunning());
 });
 

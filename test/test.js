@@ -12,7 +12,7 @@
  RemoteDisplay.vnc.webSocket.port = "5910"
  RemoteDisplay.vnc.key = "<des encrypted password>"
  */
-
+console.log(process.cwd());
 var server = require('./../lib/host.js');
 
 var host = new server();

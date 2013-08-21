@@ -2,18 +2,18 @@
     "serverport" : 8888,
     "darwin" :  {
         "vmrun" : "/Applications/VMware\\ Fusion.app/Contents/Library/vmrun -T fusion",
-        "vncpasswd" : "../bin/darwin/vmware-vncpasswd",
+        "vncpasswd" : "/bin/darwin/vmware-vncpasswd",
         "userinventory" : "/Library/Application Support/VMware Fusion/vmInventory",
         "sharedinventory" : "/Library/Application Support/VMware/VMware Fusion/Shared/vmInventory"
     },
     "linux" : {
         "vmrun" : "/usr/bin/vmrun -T ws",
-        "vncpasswd" : "../bin/linux/vmware-vncpasswd",
+        "vncpasswd" : "/bin/linux/vmware-vncpasswd",
         "userinventory" : "~/.vmware/Inventory.vmls"
     },
     "win32" : {
         "vmrun" : "\"C:\\Program Files (x86)\\VMware\\VMware Workstation\\vmrun.exe\" -T ws",
-        "vncpasswd" : "..\\bin\\win32\\vmware-vncpasswd.exe",
+        "vncpasswd" : "\\bin\\win32\\vmware-vncpasswd.exe",
         "userinventory" : "\\VMware\\inventory.vmls"
     }
 }
