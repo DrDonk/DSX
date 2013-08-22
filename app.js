@@ -54,7 +54,7 @@ app.put('/guests/:id/port/:num', function(req, res){
 });
 
 app.get('/guests/:id/poweredon', function(req, res){
-    res.json(server.inventory[req.params.id].guest.isRunning());
+    res.json(server.inventory[req.params.id].guest.poweredOn());
 });
 
 app.get('/guests/:id/poweroff', function(req, res){
@@ -69,7 +69,7 @@ app.get('/guests/:id/powerpause', function(req, res){
     res.json(server.inventory[req.params.id].guest.powerPause());
 });
 
-app.get('/guests/:id/powereset', function(req, res){
+app.get('/guests/:id/powerreset', function(req, res){
     res.json(server.inventory[req.params.id].guest.powerReset('default'));
 });
 
