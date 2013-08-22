@@ -53,32 +53,32 @@ app.put('/guests/:id/port/:num', function(req, res){
     res.json(server.inventory[req.params.id].guest.port);
 });
 
-app.get('/guests/:id/poweredon', function(req, res){
-    res.json(server.inventory[req.params.id].guest.poweredOn());
+app.get('/guests/:id/running', function(req, res){
+    res.json(server.inventory[req.params.id].guest.running);
 });
 
-app.get('/guests/:id/poweroff', function(req, res){
-    res.json(server.inventory[req.params.id].guest.powerOff('default'));
+app.get('/guests/:id/stop', function(req, res){
+    res.json(server.inventory[req.params.id].guest.stop('default'));
 });
 
-app.get('/guests/:id/poweron', function(req, res){
-    res.json(server.inventory[req.params.id].guest.powerOn('default'));
+app.get('/guests/:id/start', function(req, res){
+    res.json(server.inventory[req.params.id].guest.start('default'));
 });
 
-app.get('/guests/:id/powerpause', function(req, res){
-    res.json(server.inventory[req.params.id].guest.powerPause());
+app.get('/guests/:id/pause', function(req, res){
+    res.json(server.inventory[req.params.id].guest.pause());
 });
 
-app.get('/guests/:id/powerreset', function(req, res){
-    res.json(server.inventory[req.params.id].guest.powerReset('default'));
+app.get('/guests/:id/reset', function(req, res){
+    res.json(server.inventory[req.params.id].guest.reset('default'));
 });
 
-app.get('/guests/:id/powersuspend', function(req, res){
-    res.json(server.inventory[req.params.id].guest.powerSuspend('default'));
+app.get('/guests/:id/suspend', function(req, res){
+    res.json(server.inventory[req.params.id].guest.suspend('default'));
 });
 
-app.get('/guests/:id/powerunpause', function(req, res){
-    res.json(server.inventory[req.params.id].guest.powerUnpause());
+app.get('/guests/:id/unpause', function(req, res){
+    res.json(server.inventory[req.params.id].guest.unpause());
 });
 
 app.get('/guests/:id/commit', function(req, res){
