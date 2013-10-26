@@ -16,24 +16,24 @@ console.log(process.cwd());
 var server = require('./../lib/host.js');
 
 var host = new server();
-console.log(host);
 
-Object.keys(host.inventory).forEach(function(key) {
-    var guest = host.inventory[key].guest;
-    console.log(guest.name);
-    console.log(guest.path);
-    console.log(guest.isRunning());
-    console.log(guest.guestos);
-    console.log(guest.enabled);
-    console.log(guest.port);
-    console.log(guest.key);
+for (var key in host.inventory) {
+    console.log(host.inventory[key].guest.path);
+}
+
+_ = require('underscore');
+
+_.each(host.inventory, function(value, key){
+    _.each(value, function(value, key){
+        console.log(value);
+    });
 });
 
 //var vmrun = host.inventory["/Users/i049299/vmimages/freenas.vmwarevm/freenas.vmx"].guest;
-var vmrun = host.inventory["564d5034a0b2f06b98f14f424d6e110b"].guest;
-console.log(vmrun);
-vmrun.enabled = true;
-vmrun.key = 'password';
-vmrun.port = 5920;
-vmrun.commit();
-console.log(vmrun);
+//var vmrun = host.inventory["564d5034a0b2f06b98f14f424d6e110b"].guest;
+//console.log(vmrun);
+//vmrun.enabled = true;
+//vmrun.key = 'password';
+//vmrun.port = 5920;
+//vmrun.commit();
+//console.log(vmrun);

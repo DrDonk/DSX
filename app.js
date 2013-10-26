@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 var express = require('express'),
-    config = require('./config/config.json'),
+    config = require('./test/config.json'),
     host = require('./lib/host.js'),
     app = new express(),
     server = new host();
@@ -20,7 +20,7 @@ app.get('/guests', function(req, res){
 });
 
 app.get('/guests/:id', function(req, res){
-    res.json(server.inventory[req.params.id]);
+    res.json(server.guest(server.inventory[req.params.id]));
 });
 
 app.get('/guests/:id/name', function(req, res){
@@ -53,32 +53,42 @@ app.put('/guests/:id/port/:num', function(req, res){
     res.json(server.inventory[req.params.id].guest.port);
 });
 
+app.get('/guests/:id/url', function(req, res){
+    res.json(server.inventory[req.params.id].guest.url);
+});
+
 app.get('/guests/:id/running', function(req, res){
     res.json(server.inventory[req.params.id].guest.running);
 });
 
 app.get('/guests/:id/stop', function(req, res){
-    res.json(server.inventory[req.params.id].guest.stop('default'));
+    server.inventory[req.params.id].guest.stop('default');
+    res.send(200);
 });
 
 app.get('/guests/:id/start', function(req, res){
-    res.json(server.inventory[req.params.id].guest.start('default'));
+    server.inventory[req.params.id].guest.start('default');
+    res.send(200);
 });
 
 app.get('/guests/:id/pause', function(req, res){
-    res.json(server.inventory[req.params.id].guest.pause());
+    server.inventory[req.params.id].guest.pause();
+    res.send(200);
 });
 
 app.get('/guests/:id/reset', function(req, res){
-    res.json(server.inventory[req.params.id].guest.reset('default'));
+    server.inventory[req.params.id].guest.reset('default');
+    res.send(200);
 });
 
 app.get('/guests/:id/suspend', function(req, res){
-    res.json(server.inventory[req.params.id].guest.suspend('default'));
+    server.inventory[req.params.id].guest.suspend('default');
+    res.send(200);
 });
 
 app.get('/guests/:id/unpause', function(req, res){
-    res.json(server.inventory[req.params.id].guest.unpause());
+    server.inventory[req.params.id].guest.unpause();
+    res.send(200);
 });
 
 app.get('/guests/:id/commit', function(req, res){
