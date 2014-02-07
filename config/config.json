@@ -1,4 +1,6 @@
 {
+    "title": "DSX Server",
+    "version": "0.0.1",
     "serverport" : 8999,
     "darwin" :  {
         "vmrun" : "/Applications/VMware\\ Fusion.app/Contents/Library/vmrun -T fusion",

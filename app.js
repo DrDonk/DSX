@@ -6,13 +6,13 @@
  * To change this template use File | Settings | File Templates.
  */
 var express = require('express'),
-    config = require('./test/config.json'),
+    config = require('./config/config.json'),
     host = require('./lib/host.js'),
     app = new express(),
     server = new host();
 
 app.get('/', function(req, res){
-    res.send('DSX Web Service');
+    res.send(config);
 });
 
 app.get('/guests', function(req, res){
@@ -44,13 +44,22 @@ app.put('/guests/:id/key/:pwd', function(req, res){
     res.json(server.inventory[req.params.id].guest.key);
 });
 
-app.get('/guests/:id/port', function(req, res){
-    res.json(server.inventory[req.params.id].guest.port);
+app.get('/guests/:id/vnc', function(req, res){
+    res.json(server.inventory[req.params.id].guest.vnc);
 });
 
-app.put('/guests/:id/port/:num', function(req, res){
-    server.inventory[req.params.id].guest.remoteDisplayPort = req.params.num;
-    res.json(server.inventory[req.params.id].guest.port);
+app.put('/guests/:id/vnc/:num', function(req, res){
+    server.inventory[req.params.id].guest.vnc = req.params.num;
+    res.json(server.inventory[req.params.id].guest.vnc);
+});
+
+app.get('/guests/:id/wss', function(req, res){
+    res.json(server.inventory[req.params.id].guest.wss);
+});
+
+app.put('/guests/:id/wss/:num', function(req, res){
+    server.inventory[req.params.id].guest.wss = req.params.num;
+    res.json(server.inventory[req.params.id].guest.wss);
 });
 
 app.get('/guests/:id/url', function(req, res){
