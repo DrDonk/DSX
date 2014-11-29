@@ -1,0 +1,23 @@
+{
+  "name": "dsx",
+  "version": "0.0.0",
+  "homepage": "https://github.com/DrDonk/DSX",
+  "authors": [
+    "Dave Parsons <dave@daveparsons.net>"
+  ],
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-no-vnc": "*",
+    "no-vnc": "*"
+  }
+}
