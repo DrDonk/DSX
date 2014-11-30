@@ -9,11 +9,7 @@
   "author": "Dave Parsons",
   "license": "MIT",
   "dependencies": {
-    "colors": "~0.6.2",
     "express": "~3.3.4",
-    "shelljs": "~0.1.4",
-    "socket.io": "^1.1.0",
-    "socket.io-client": "^1.1.0",
-    "underscore": "~1.5.1"
+    "shelljs": "~0.1.4"
   }
 }
