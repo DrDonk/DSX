@@ -5,7 +5,8 @@
  * Time: 21:37
  * To change this template use File | Settings | File Templates.
  */
-var express = require('express'),
+var path = require('path'),
+    express = require('express'),
     config = require('./config/config.json'),
     host = require('./lib/host.js'),
     app = new express(),
@@ -63,7 +64,9 @@ app.put('/guests/:id/wss/:num', function(req, res){
 });
 
 app.get('/guests/:id/url', function(req, res){
-    res.json(server.inventory[req.params.id].guest.url);
+    // var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+    // console.log(fullUrl);
+    res.json(req.protocol + '://' + req.get('host') + server.inventory[req.params.id].guest.url);
 });
 
 app.get('/guests/:id/running', function(req, res){
@@ -104,4 +107,5 @@ app.get('/guests/:id/commit', function(req, res){
     res.json(server.inventory[req.params.id].guest.commit());
 });
 
+app.use(express.static(__dirname + '/bower_components/no-vnc'));
 app.listen(config["serverport"]);
