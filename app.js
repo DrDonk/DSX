@@ -107,5 +107,6 @@ app.get('/guests/:id/commit', function(req, res){
     res.json(server.inventory[req.params.id].guest.commit());
 });
 
-app.use(express.static(__dirname + '/bower_components/no-vnc'));
+//app.use(express.static(__dirname + '/bower_components/no-vnc'));
+app.use(express.static(__dirname));
 app.listen(config["serverport"]);
